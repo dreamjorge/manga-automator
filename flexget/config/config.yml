@@ -1,0 +1,16 @@
+tasks:
+  hunter_x_hunter:
+    rss: https://mangadex.org/rss/db692d58-4b13-4174-ae8c-30c515c0689c
+    series:
+      - Nombre del Manga:
+          ignore: [requisitos]
+          languages:
+            - es
+    download:
+      path: /downloads/mangas/hunter_x_hunter
+      use_qbittorrent:
+        host: qbittorrent
+        port: 8080
+        username: admin
+        password: tu_contraseña_segura
+    quality: any

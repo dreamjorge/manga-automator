@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  qbittorrent:
+    image: linuxserver/qbittorrent
+    container_name: qbittorrent
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+      - WEBUI_PORT=8080
+      - QBITTORRENT_WEBUI_PASSWORD=tu_contraseña_segura
+    volumes:
+      - ./qbittorrent/config:/config
+      - ./downloads:/downloads
+    ports:
+      - 8080:8080
+      - 6881:6881
+      - 6881:6881/udp
+    restart: unless-stopped
+
+  flexget:
+    image: flexget/flexget
+    container_name: flexget
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+    volumes:
+      - ./flexget/config:/config
+      - ./downloads:/downloads
+    depends_on:
+      - qbittorrent
+    restart: unless-stopped
+    command: web
+
+  calibre:
+    image: linuxserver/calibre
+    container_name: calibre
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+      - CALIBRE_LIBRARY=/calibre/library
+    volumes:
+      - ./calibre/config:/config
+      - ./calibre/library:/calibre/library
+      - ./downloads:/downloads
+    ports:
+      - 8081:8080
+    restart: unless-stopped
